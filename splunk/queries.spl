@@ -1,0 +1,54 @@
+# ── Basic ─────────────────────────────────────────────────────────────────────
+
+# All Suricata events
+index=main sourcetype=suricata
+
+# All alert events only
+index=main sourcetype=suricata event_type=alert
+
+# ── Filtering ─────────────────────────────────────────────────────────────────
+
+# Filter by attacker IP
+index=main sourcetype=suricata src_ip="192.168.115.130"
+
+# Filter by specific signature
+index=main sourcetype=suricata event_type=alert alert.signature="port scan detected"
+
+# Port scan events only (by signature_id)
+index=main sourcetype=suricata event_type=alert alert.signature_id=1000002
+
+# ICMP ping events only
+index=main sourcetype=suricata event_type=alert alert.signature_id=1000001
+
+# ── Aggregation ───────────────────────────────────────────────────────────────
+
+# Count alerts by signature
+index=main sourcetype=suricata event_type=alert
+| stats count by alert.signature
+| sort -count
+
+# Count alerts by source IP
+index=main sourcetype=suricata event_type=alert
+| stats count by src_ip
+| sort -count
+
+# Count alerts by destination port
+index=main sourcetype=suricata event_type=alert
+| stats count by dest_port
+| sort -count
+
+# Alert volume over time (1-minute buckets)
+index=main sourcetype=suricata event_type=alert
+| timechart span=1m count by alert.signature
+
+# ── Investigation ─────────────────────────────────────────────────────────────
+
+# Full event detail for a specific flow
+index=main sourcetype=suricata src_ip="192.168.115.130"
+| table _time, event_type, src_ip, src_port, dest_ip, dest_port, proto, alert.signature, in_iface
+
+# Top targeted ports during port scan
+index=main sourcetype=suricata event_type=alert alert.signature_id=1000002
+| stats count by dest_port
+| sort -count
+| head 20
