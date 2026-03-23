@@ -13,7 +13,8 @@ The goal was to build a fully functional IDS → SIEM pipeline from scratch — 
 ---
 
 ## Architecture
-<img width="2000" height="2828" alt="image" src="https://github.com/user-attachments/assets/9566d9fd-5250-4a2c-9aaf-861d6440b6b6" />
+<img width="1340" height="1130" alt="image" src="https://github.com/user-attachments/assets/4975b2fc-c01b-462f-a66f-f63d412d0cd1" />
+
 
 > Full PDF version available in [`/docs/SOC_Lab_Architecture.pdf`](docs/SOC_Lab_Architecture.pdf)
 
